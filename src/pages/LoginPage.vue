@@ -35,12 +35,7 @@ const handleLogin = async (data: any) => {
 </script>
 
 <template>
-  <RegistrationForm
-    title="Login"
-    v-if="!isSuccess"
-    :errors="errors"
-    @login="handleLogin"
-  >
+  <RegistrationForm title="Login" v-if="!isSuccess" :errors="errors" @login="handleLogin">
     <RouterLink :to="Routes.REGISTER">
       <small>Register</small>
     </RouterLink>

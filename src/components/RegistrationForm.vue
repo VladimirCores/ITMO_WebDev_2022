@@ -18,8 +18,7 @@ const inputUsername = ref<HTMLInputElement | null>(null);
 const inputPassword = ref<HTMLInputElement | null>(null);
 const inputConfirm = ref<HTMLInputElement | null>(null);
 
-const checkPasswordsMatch = (): boolean =>
-  inputPassword.value!.value === inputConfirm.value?.value;
+const checkPasswordsMatch = (): boolean => inputPassword.value!.value === inputConfirm.value?.value;
 
 const onSendClick = async () => {
   const username = inputUsername.value!.value || '';
