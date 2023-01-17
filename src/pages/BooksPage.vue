@@ -44,7 +44,11 @@ const onPagePrevClick = () => {
 const onUploadComplete = () => {
   console.log('> BooksPage -> onUploadComplete:');
   fetchMore({
-    updateQuery: ({ fetchMoreResult }) => {
+    updateQuery: (_, { fetchMoreResult }) => {
+      console.log(
+        '> BooksPage -> onUploadComplete -> updateQuery',
+        fetchMoreResult,
+      );
       if (!fetchMoreResult) return;
       isLoading.value = false;
       maxBooks.value = fetchMoreResult.books.length;
