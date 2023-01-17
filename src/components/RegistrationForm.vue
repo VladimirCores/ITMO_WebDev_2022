@@ -1,21 +1,25 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const props = withDefaults(defineProps<{
-  registration: boolean
-  title: string
-  errors: string[]
-}>(), {
-  registration: false,
-});
+const props = withDefaults(
+  defineProps<{
+    registration: boolean;
+    title: string;
+    errors: string[];
+  }>(),
+  {
+    registration: false,
+  },
+);
 
-const emit = defineEmits(['login', 'register'])
+const emit = defineEmits(['login', 'register']);
 
 const inputUsername = ref<HTMLInputElement | null>(null);
 const inputPassword = ref<HTMLInputElement | null>(null);
 const inputConfirm = ref<HTMLInputElement | null>(null);
 
-const checkPasswordsMatch = (): boolean => inputPassword.value!.value === inputConfirm.value?.value;
+const checkPasswordsMatch = (): boolean =>
+  inputPassword.value!.value === inputConfirm.value?.value;
 
 const onSendClick = async () => {
   const username = inputUsername.value!.value || '';
@@ -35,7 +39,7 @@ const onSendClick = async () => {
   <h1>{{ props.title }}</h1>
   <hr />
   <div v-if="props.errors.length > 0">
-    <div v-for="(error, index) in errors" :key="index" style="color: red;">
+    <div v-for="(error, index) in errors" :key="index" style="color: red">
       <small>{{ error }}</small>
     </div>
     <hr />
@@ -52,11 +56,11 @@ const onSendClick = async () => {
     <label for="confirm">Confirm:</label>
     <input ref="inputConfirm" id="confirm" />
   </div>
-  <div style="margin: 1rem 0;">
+  <div style="margin: 1rem 0">
     <button @click="onSendClick">Send</button>
   </div>
   <div>
-    <slot/>
+    <slot />
   </div>
 </template>
 

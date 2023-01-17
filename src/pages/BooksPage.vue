@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject, ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useLazyQuery } from '@vue/apollo-composable';
 import UploadBooks from '../components/UploadBooks.vue';
 import gql from 'graphql-tag';
@@ -14,8 +14,6 @@ const { result, load, fetchMore } = useLazyQuery(gql`
   }
 `);
 
-// const pb: any = inject('pb');
-
 const booksList = ref<any>([]);
 const currentPageIndex = ref(0);
 const maxBooks = ref(0);
@@ -29,39 +27,24 @@ const canRenderUpload = computed(() => {
 const canRenderNextPageButton = computed(
   () => currentPageIndex.value < Math.floor((maxBooks.value - 1) / LIMIT),
 );
-const loadBooks = async () =>
-  Promise.resolve()
-    .then(() => (isLoading.value = true))
-    .then(() => pb.collection('books').getList(1, LIMIT, {}))
-    .then((result) => {
-      booksList.value = result.items;
-      isLoading.value = false;
-      maxBooks.value = result.totalItems;
-      console.log(canRenderUpload.value, maxBooks.value, result);
-    });
 
 const getBookIndex = (index: number) =>
   1 + index + currentPageIndex.value * LIMIT;
 
 const onPageNextClick = () => {
   currentPageIndex.value++;
-  loadBooks();
+  // loadBooks();
 };
 
 const onPagePrevClick = () => {
   currentPageIndex.value--;
-  loadBooks();
+  // loadBooks();
 };
-
-// pb.collection('books').subscribe('*', (change: any) => {
-//   console.log('> change', change);
-//   loadBooks();
-// });
 
 const onUploadComplete = () => {
   console.log('> BooksPage -> onUploadComplete:');
   fetchMore({
-    updateQuery: (previousResult, { fetchMoreResult }) => {
+    updateQuery: ({ fetchMoreResult }) => {
       if (!fetchMoreResult) return;
       isLoading.value = false;
       maxBooks.value = fetchMoreResult.books.length;
@@ -106,7 +89,7 @@ onUnmounted(() => {
       </button>
     </div>
     <div style="text-align: left; width: 400px">
-      <div v-for="(book, index) in booksList">
+      <div v-for="(book, index) in booksList" :key="book.id">
         {{ getBookIndex(index) }}. {{ book.title }}
       </div>
     </div>
