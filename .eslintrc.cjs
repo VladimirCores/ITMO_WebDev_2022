@@ -7,12 +7,10 @@ module.exports = {
   extends: [
     'plugin:vue/vue3-strongly-recommended', 
     'eslint:recommended', 
-    '@vue/typescript/recommended', 
-    'prettier'
+    '@vue/typescript/recommended',
   ],
-  plugins: ['@typescript-eslint', 'prettier'],
+  plugins: ['@typescript-eslint'],
   rules: {
-    'prettier/prettier': 'error',
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/no-non-null-assertion': 0,
     // not needed for vue 3
