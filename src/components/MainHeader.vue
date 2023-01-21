@@ -2,8 +2,14 @@
 import { computed } from 'vue';
 import Routes from '../consts/Routes';
 import { useRouter } from 'vue-router';
+import type { IUserData } from '../model/UserModel';
 
-const props: any = defineProps<{ userData?: any | null }>();
+const emit = defineEmits(['logout']);
+
+const props: any = withDefaults(defineProps<{ userData?: IUserData, showLogout: boolean }>(), {
+  showLogout: false,
+  userData: undefined,
+});
 const router = useRouter();
 
 const isUserAuthenticated = computed(() => !!props.userData);
@@ -16,6 +22,12 @@ const isCurrentPageNotBooks = computed(() => {
   const currentRoute = router.currentRoute.value;
   return currentRoute.path !== Routes.BOOKS;
 });
+
+const onLogoutButtonClick = () => {
+  console.log('> MainHeader -> onLogout');
+  emit('logout');
+}
+
 </script>
 <template>
   <header style="width: 100%; padding: 1rem; background-color: lightgrey">
@@ -27,6 +39,9 @@ const isCurrentPageNotBooks = computed(() => {
       </div>
       <div v-else>
         <RouterLink :to="Routes.INDEX">Home</RouterLink>
+      </div>
+      <div v-if="showLogout">
+        <button @click="onLogoutButtonClick">Logout</button>
       </div>
     </div>
     <div v-else-if="isCurrentPageNotLogin">
