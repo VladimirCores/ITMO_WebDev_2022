@@ -155,19 +155,22 @@ onMounted(() => {
     />
     <div v-if="!isBooksLoading" style="text-align: left; width: 100%">
       <div v-for="(book, index) in booksList" :key="book.id" style="padding: 0.2rem 0">
-        <button 
-          :disabled="book.loading"
-          style="margin-right: 0.2rem;" 
-          @click="onAddBookToUserClick(book)"
-        >
-          +
-        </button>
-        <button
-          :disabled="book.loading || !book.userOwned.length" 
-          @click="onRemoveBookFromUserClick(book)"
-        >
-          -
-        </button>
+        <span style="font-size: 0.75rem; font-weight: bold;">
+          <button 
+            :disabled="book.loading"
+            style="margin-right: 0.2rem; width: 1rem;" 
+            @click="onAddBookToUserClick(book)"
+          >
+            +
+          </button>
+          <button
+            style="width: 1rem;"
+            :disabled="book.loading || !book.userOwned.length" 
+            @click="onRemoveBookFromUserClick(book)"
+          >
+            -
+          </button>
+        </span>
         {{ getBookIndex(index) }}. {{ book.title }} ({{ book.count }})
       </div>
     </div>
