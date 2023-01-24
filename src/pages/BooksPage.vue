@@ -23,10 +23,10 @@ const {
       books(limit: $limit, offset: $offset) {
         id
         title
-        books_user(where: {user_id: {_eq: $user_id}}) {
+        book_users(where: {user_id: {_eq: $user_id}}) {
           id
         }
-        books_user_aggregate(where: {user_id: {_eq: $user_id}}) {
+        book_users_aggregate(where: {user_id: {_eq: $user_id}}) {
           aggregate {
             count(columns: book_id)
           }
@@ -47,7 +47,6 @@ const {
 
 const {
   mutate: deleteBookById,
-  loading: isDeleteBookInProgress,
 } = useMutation(gql`
   mutation DeleteUserBookById($id: Int = 10) {
     delete_user_books_by_pk(id: $id) {
@@ -58,7 +57,6 @@ const {
 
 const {
   mutate: insertUserBook,
-  loading: isInsertBookInProgress,
 } = useMutation(gql`
   mutation InsertUserBook($book_id: Int!, $user_id: uuid!) {
   insert_user_books_one(object: {book_id: $book_id, user_id: $user_id}) {
@@ -71,13 +69,12 @@ const booksList = computed(() => result.value?.books.map((data: any) => {
   const book = {
     id: data.id,
     title: data.title,
-    userOwned: reactive(data.books_user.map((ub: any) => ({ id: ub.id }))),
-    count: data.books_user_aggregate.aggregate.count,
+    userOwned: reactive(data.book_users.map((ub: any) => ({ id: ub.id }))),
     loading: false
   }
   return (reactive(book)); 
 }) || []);
-// const booksList = computed(() => result.value?.books || []);
+
 const maxBooks = computed(() => result.value?.books_aggregate.aggregate.count || 0);
 const maxPages = computed(() => Math.ceil(maxBooks.value / LIMIT));
 const pageIndex = computed(() => currentPageIndex.value + 1);
@@ -112,7 +109,6 @@ const onAddBookToUserClick = (book: any) => {
   insertUserBook({ book_id: book.id, user_id: userModel!.userData!.id })
     .then((data: any) => {
       console.log('Inserted', data );
-      book.count++;
       book.userOwned.push({ id: data.id });
       book.loading = false;
     });
@@ -124,7 +120,6 @@ const onRemoveBookFromUserClick = (book: any) => {
     book.loading = true;
     deleteBookById({ id: book.userOwned.shift().id }).then(() => {
       console.log('Removed:', book.userOwned[0]);
-      book.count--;
       book.loading = false;
     })
   }
@@ -171,7 +166,7 @@ onMounted(() => {
             -
           </button>
         </span>
-        {{ getBookIndex(index) }}. {{ book.title }} ({{ book.count }})
+        {{ getBookIndex(index) }}. {{ book.title }} ({{ book.userOwned.length }})
       </div>
     </div>
     <div v-else>Page loading</div>
