@@ -3,9 +3,7 @@
     Header
     <div>
       <div>Menu</div>
-      <div>
-        <div id="header-navigation"/>
-      </div>
+      <slot name="navigation"/>
     </div>
     <slot />
   </div>
