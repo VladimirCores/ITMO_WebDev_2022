@@ -1,12 +1,18 @@
 <template>
   <div>
-    Header
+    <header>
+      <slot name="header">
+        Default Header
+      </slot>
+    </header>
     <div>
       <div>Menu</div>
-      <div>
-        <div id="header-navigation"/>
-      </div>
+      <slot name="menu">
+        No navigation
+      </slot>
     </div>
-    <slot />
+    <main>
+      <slot />
+    </main>
   </div>
 </template>

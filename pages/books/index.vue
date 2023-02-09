@@ -1,11 +1,15 @@
-<script setup>
-const user = useUser();
+<script setup lang='ts'>
+const user = useUser().getUser();
+definePageMeta({
+  layout: 'custom',
+});
+const booksList = useState('books');
+console.log('booksList', booksList.value);
 </script>
 <template>
   <div>
-    Books Page: {{ user.name }}
-    <Teleport to="#header-navigation">
-      <NuxtLink to="/">Home</NuxtLink>
-    </Teleport>
+    <div>Books Page: {{ user.name }}</div>
+    <NuxtLink to="/">Home</NuxtLink>
+    <div v-for="(book, index) in booksList">{{index + 1}}. {{ book.title }}</div>
   </div>
 </template>
