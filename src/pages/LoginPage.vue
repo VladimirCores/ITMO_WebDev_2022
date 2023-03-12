@@ -49,29 +49,12 @@ const handleLogin = async (data: any) => {
     console.log(error.graphQLErrors)
     console.log(error.networkError)
   })
-  // await pb
-  //   .collection('users')
-  //   .authWithPassword(data.username, data.password)
-  //   .then((result: any) => {
-  //     console.log('> handleLoginClick -> result:', result);
-  //     isSuccess.value = true;
-  //   })
-  //   .catch((e: any) => {
-  //     console.log('> handleLoginClick -> error:', e.data.data);
-  //     const data = e.data.data;
-  //     errors.value.push(e.toString());
-  //     let item, message;
-  //     for (item in data) {
-  //       message = `${item}: ${data[item].message}`;
-  //       errors.value.push(message);
-  //     }
-  //   });
 };
 </script>
 
 <template>
-  <RegistrationForm 
-    title="Login" 
+  <RegistrationForm
+    title="Login"
     v-if="!isSuccess"
     :errors="errors"
     @login="handleLogin"
